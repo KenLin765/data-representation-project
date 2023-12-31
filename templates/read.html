@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Country</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    nav {
+        background-color: #333;
+        overflow: hidden;
+    }
+    nav a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    nav a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+</style>
+</head>
+<body>
+<nav>
+    <a href="/create">Create</a>
+    <a href="/read">Read</a>
+    <a href="/update">Update</a>
+    <a href="/delete">Delete</a>
+</nav>
+<body>
+    <h1>Read Country</h1>
+
+    <!-- Form for reading country data -->
+    <form id="read-form" method="POST">
+        <label for="name_common">Enter Name Common:</label>
+        <input type="text" name="name_common" required>
+        <button type="submit">Read</button>
+    </form>
+
+    <!-- Display data for the entered country -->
+    <div id="country-data"></div>
+
+    <script>
+        $(document).ready(function() {
+            // Submit the read form using AJAX
+            $('#read-form').submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '/get_countries_by_name',
+                    type: 'GET',
+                    data: { name: $('input[name="name_common"]').val() },
+                    success: function(data) {
+                        // Display data for the entered country
+                        var countryDataHtml = '<h2> Country Data:</h2>';
+                        if (data.length > 0) {
+                            countryDataHtml += '<ul>';
+                            $.each(data, function(index, country) {
+                                countryDataHtml += '<li>Name Common: ' + country.name_common + '</li>';
+                                countryDataHtml += '<li>Region: ' + country.region + '</li>';
+                                countryDataHtml += '<li>Subregion: ' + country.subregion + '</li>';
+                                countryDataHtml += '<li>Population: ' + country.population + '</li>';
+                                countryDataHtml += '<li>Currencies Name: ' + country.currencies_name + '</li>';
+                                countryDataHtml += '<li>Languages: ' + country.languages + '</li>';
+                                countryDataHtml += '<li>UN Member: ' + country.unMember + '</li>';
+                                countryDataHtml += '<li>Capital: ' + country.capital + '</li>';
+                                countryDataHtml += '<li>Car Signs: ' + country.car_signs + '</li>';
+                                countryDataHtml += '<li>Car Side: ' + country.car_side + '</li>';
+                                countryDataHtml += '<hr>';
+                            });
+                            countryDataHtml += '</ul>';
+                        } else {
+                            countryDataHtml += '<p>No matching countries found.</p>';
+                        }
+                        $('#country-data').html(countryDataHtml);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching country data:', error);
+                        $('#country-data').html('<p>Error fetching country data. Please try again.</p>');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

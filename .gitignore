@@ -184,3 +184,4 @@ __pycache__/
 # Ignore local development configurations
 *.local
 
+db_connection.py
