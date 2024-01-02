@@ -6,7 +6,11 @@
     <title>Countries App</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
         }
         nav {
             background-color: #333;
@@ -19,10 +23,26 @@
             text-align: center;
             padding: 14px 16px;
             text-decoration: none;
+            transition: background-color 0.3s;
         }
         nav a:hover {
             background-color: #ddd;
             color: black;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            color: #333;
+        }
+        p {
+            text-align: center;
+            color: #666;
+        }
+        #earth-image {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -35,6 +55,7 @@
     </nav>
 
     <h1>Welcome to the Countries App</h1>
+    <img id="earth-image" src="C:\Users\Kenne\OneDrive\Desktop\Programming\data-representation-project\images\earth.jpg" alt="Earth Image">
     <p>This is the main page. Use the navigation bar to go to different sections.</p>
 </body>
 </html>
