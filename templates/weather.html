@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Country</title>
+    <title>Weather Information</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <style>
         body {
@@ -46,7 +46,7 @@
             color: #007bff; /* Primary blue color */
         }
 
-        #add-form {
+        #weather-container {
             margin-top: 20px;
             text-align: center;
             background-color: #fff;
@@ -56,14 +56,15 @@
             width: 300px; /* Adjust form width */
         }
 
-        #add-form label,
-        #add-form input,
-        #add-form button {
+        #weather-container label,
+        #weather-container select,
+        #weather-container button,
+        #weather-info {
             margin-bottom: 15px;
             width: 100%;
         }
 
-        #add-form button {
+        #weather-container button {
             background-color: #007bff;
             color: #fff;
             padding: 10px;
@@ -73,7 +74,7 @@
             transition: background-color 0.3s;
         }
 
-        #add-form button:hover {
+        #weather-container button:hover {
             background-color: #0056b3;
         }
     </style>
@@ -82,89 +83,117 @@
 
 <nav>
     <a href="/..">Home</a>
-    <a href="/create">Create a Country</a>
+    <a href="/create">Create a County</a>
     <a href="/read">Information on Country</a>
     <a href="/update">Update a Country Details</a>
     <a href="/delete">Delete a Country</a>
     <a href="/weather">Weather for a Capital City</a>
 </nav>
 
+<h1>Weather Information</h1>
 
-    <h1>Weather Information</h1>
+<div id="weather-container">
+    <label for="city-select">Select a capital city:</label>
+    <select id="city-select"></select>
 
-    <div id="weather-container">
-        <label for="city-select">Select a capital city:</label>
-        <select id="city-select"></select>
+    <button onclick="getWeather()">Get Weather</button>
 
-        <button onclick="getWeather()">Get Weather</button>
+    <div id="weather-info"></div>
+</div>
 
-        <div id="weather-info"></div>
-    </div>
+<script>
+    // Fetch the list of capital cities and populate the dropdown
+    $(document).ready(function() {
+        $.ajax({
+            url: '/get_all_capitals',
+            type: 'GET',
+            success: function(data) {
+                var citySelect = $('#city-select');
+                citySelect.empty(); // Clear existing options before populating
 
-    <script>
-        // Fetch the list of capital cities and populate the dropdown
-        $(document).ready(function() {
-            $.ajax({
-                url: '/get_all_capitals',
-                type: 'GET',
-                success: function(data) {
-                    var citySelect = $('#city-select');
-                    citySelect.empty(); // Clear existing options before populating
-
-                    // Check if data is an array
-                    if (Array.isArray(data)) {
-                        $.each(data, function(index, city) {
-                            citySelect.append('<option value="' + city.capital + '">' + city.capital + '</option>');
-                        });
-                    } else {
-                        console.error('Invalid data format received:', data);
-                    }
-                },
-                error: function(error) {
-                    console.error('Error fetching capital cities:', error);
+                // Check if data is an array
+                if (Array.isArray(data)) {
+                    $.each(data, function(index, city) {
+                        citySelect.append('<option value="' + city.capital + '">' + city.capital + '</option>');
+                    });
+                } else {
+                    console.error('Invalid data format received:', data);
                 }
-            });
+            },
+            error: function(error) {
+                console.error('Error fetching capital cities:', error);
+            }
         });
+    });
 
-        // Function to fetch weather information
-        function getWeather() {
-            var selectedCity = $('#city-select').val();
+    // Function to fetch weather information
+    function getWeather() {
+        var selectedCity = $('#city-select').val();
 
-            $.ajax({
-                url: '/get_weather',
-                type: 'GET',
-                data: { country_name: selectedCity },
-                success: function(data) {
-                    console.log('Received data:', data);
+        $.ajax({
+            url: '/get_weather',
+            type: 'GET',
+            data: { country_name: selectedCity },
+            success: function(data) {
+                console.log('Received data:', data);
 
-                    // Check if data is an object
-                    if (typeof data === 'object') {
-                        console.log('Data is an object');
+                // Check if data is an object
+                if (typeof data === 'object') {
+                    console.log('Data is an object');
 
-                        // Check if data contains temperature and description
-                        if (data.temperature !== undefined && data.description !== undefined) {
-                            console.log('Temperature:', data.temperature);
-                            console.log('Description:', data.description);
+                    // Check if data contains temperature and description
+                    if (data.temperature !== undefined && data.description !== undefined) {
+                        console.log('Temperature:', data.temperature);
+                        console.log('Description:', data.description);
 
-                            // Display the information
-                            var weatherInfo = 'Temperature: ' + data.temperature + '°C<br>';
-                            weatherInfo += 'Description: ' + data.description;
-                            $('#weather-info').html(weatherInfo);
-                        } else {
-                            console.error('Data is missing temperature or description:', data);
-                            $('#weather-info').html('Error fetching weather information.');
+                        // Display additional information
+                        var weatherInfo = '<h2>Weather Information:</h2>';
+                        weatherInfo += '<p>Temperature: ' + data.temperature + '°C</p>';
+                        weatherInfo += '<p>Description: ' + data.description + '</p>';
+
+                        // Check if data contains humidity and wind speed
+                        if (data.humidity !== undefined && data.wind_speed !== undefined) {
+                            console.log('Humidity:', data.humidity);
+                            console.log('Wind Speed:', data.wind_speed);
+
+                            // Display humidity and wind speed
+                            weatherInfo += '<p>Humidity: ' + data.humidity + '%</p>';
+                            weatherInfo += '<p>Wind Speed: ' + data.wind_speed + ' m/s</p>';
                         }
+
+                        // Check if data contains country details
+                        if (data.country_details !== undefined) {
+                            console.log('Country Details:', data.country_details);
+
+                            // Display country details
+                            weatherInfo += '<h3>Country Details:</h3>';
+                            weatherInfo += '<p>Region: ' + data.country_details.region + '</p>';
+                            weatherInfo += '<p>Subregion: ' + data.country_details.subregion + '</p>';
+                            weatherInfo += '<p>Population: ' + data.country_details.population + '</p>';
+                            weatherInfo += '<p>Currencies Name: ' + data.country_details.currencies_name + '</p>';
+                            weatherInfo += '<p>Languages: ' + data.country_details.languages + '</p>';
+                            weatherInfo += '<p>UN Member: ' + data.country_details.unMember + '</p>';
+                            weatherInfo += '<p>Capital: ' + data.country_details.capital + '</p>';
+                            weatherInfo += '<p>Car Signs: ' + data.country_details.car_signs + '</p>';
+                            weatherInfo += '<p>Car Side: ' + data.country_details.car_side + '</p>';
+                        }
+
+                        $('#weather-info').html(weatherInfo);
                     } else {
-                        console.error('Invalid data format received:', data);
+                        console.error('Data is missing temperature or description:', data);
                         $('#weather-info').html('Error fetching weather information.');
                     }
-                },
-                error: function(error) {
-                    console.error('Error fetching weather information:', error);
+                } else {
+                    console.error('Invalid data format received:', data);
                     $('#weather-info').html('Error fetching weather information.');
                 }
-            });
-        }
-    </script>
+            },
+            error: function(error) {
+                console.error('Error fetching weather information:', error);
+                $('#weather-info').html('Error fetching weather information.');
+            }
+        });
+    }
+</script>
 </body>
 </html>
