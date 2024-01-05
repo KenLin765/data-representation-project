@@ -2,16 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, m
 from db_connection import get_db_connection
 import requests
 from config import OPENWEATHERMAP_API_KEY
-import logging
-from logging import StreamHandler
 
 app = Flask(__name__)
-
-# Configure logging to print errors to the console
-handler = StreamHandler()
-handler.setLevel(logging.ERROR)
-app.logger.addHandler(handler)
-
 
 # Routes
 @app.route('/')
