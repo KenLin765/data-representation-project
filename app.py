@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, m
 from db_connection import get_db_connection
 import requests
 from config import OPENWEATHERMAP_API_KEY
+from flask import Flask, render_template, request, redirect, url_for, jsonify, make_response
 
 app = Flask(__name__)
 

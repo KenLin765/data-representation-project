@@ -1,3 +1,5 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,16 +61,39 @@
     </style>
 </head>
 <body>
-    <nav>
-        <a href="/create">Create a new county</a>
-        <a href="/read">Info on Country</a>
-        <a href="/update">Update Country Details</a>
-        <a href="/delete">Delete a Country</a>
-        <a href="/weather">Weather in Capital City</a>
-    </nav>
+    <div id="password-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+        <h1>Welcome to the Countries App</h1>
+        <label for="password-input">Enter Password:</label>
+        <input type="password" id="password-input">
+        <button onclick="authenticate()">Login</button>
+    </div>
 
-    <h1>Welcome to the Countries App</h1>
-    <img id="earth-image" src="https://raw.githubusercontent.com/KenLin765/data-representation-project/main/images/earth.jpg" alt="earth-image">
-    <p>This is the main page. Use the navigation bar to go to different sections.</p>
+    <div id="content-container" style="display: none;">
+        <nav>
+            <a href="/create">Create a new county</a>
+            <a href="/read">Info on Country</a>
+            <a href="/update">Update Country Details</a>
+            <a href="/delete">Delete a Country</a>
+            <a href="/weather">Weather in Capital City</a>
+        </nav>
+
+        <h1>Welcome to the Countries App</h1>
+        <img id="earth-image" src="https://raw.githubusercontent.com/KenLin765/data-representation-project/main/images/earth.jpg" alt="earth-image">
+        <p>This is the main page. Use the navigation bar to go to different sections.</p>
+    </div>
+
+    <script>
+        function authenticate() {
+            const passwordInput = document.getElementById('password-input').value;
+            // Check if the entered password is correct
+            if (passwordInput === 'password') {
+                // Hide password container and show content container
+                document.getElementById('password-container').style.display = 'none';
+                document.getElementById('content-container').style.display = 'block';
+            } else {
+                alert('Incorrect password. Please try again.');
+            }
+        }
+    </script>
 </body>
 </html>

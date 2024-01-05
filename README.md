@@ -2,7 +2,7 @@
 
 Kenneth Linehan, Winter 23/24
 
-This project is a CRUD (Create, Read, Update, Delete) web application that manages information about countries. It includes a Flask web server, a MySQL database, and integration with OpenWeatherMap API for weather information.
+This project is a CRUD (Create, Read, Update, Delete) web application that manages information about countries. It includes a Flask web server, a MySQL database, and integration with OpenWeatherMap API for weather information. 
 
 ## Prerequisites
 
@@ -21,6 +21,12 @@ I have hosted the website on:
 https://kennethlinehan132.pythonanywhere.com/
 
 This will allow a user to use the website without cloning and setting up the database to work. 
+
+This works the same online and on github, the authentication is the only difference.
+
+## Authentication
+
+I didn't include an authentication on python anywhere as it was giving me issues, but I included a basic one on github. When the user opens the main page it will ask for a login. Just for simplicity reasons I put this as "password" with a lower case p.
 
 
 ## Setup Instructions
@@ -108,10 +114,7 @@ I'd like to do more with this project as I really enjoyed working with the datab
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+Pull requests are welcome. 
 
 ## License
 
