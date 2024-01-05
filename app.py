@@ -5,12 +5,13 @@ from config import OPENWEATHERMAP_API_KEY
 import logging
 from logging import StreamHandler
 
+app = Flask(__name__)
+
 # Configure logging to print errors to the console
 handler = StreamHandler()
 handler.setLevel(logging.ERROR)
 app.logger.addHandler(handler)
 
-app = Flask(__name__)
 
 # Routes
 @app.route('/')
